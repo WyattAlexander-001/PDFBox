@@ -14,6 +14,8 @@ public class Main {
 //        document.save( "C:\\PDF\\mypdf.pdf"); //Make sure you have the dir
 //        System.out.println("PDF MADE!");
 //        document.close();
+
+        //====================================================================
         // ^^ Above code simply makes a pdf that is a blank 1-page document. ^^
 
 
@@ -26,8 +28,6 @@ public class Main {
         }
         document.addPage(new PDPage());
         document.save("C:\\PDF\\myNewPDF.pdf");
-
-
 
         String newFilePath = "C:\\PDF\\myNewPDF.pdf";
         document.save(newFilePath); // Save the new document
