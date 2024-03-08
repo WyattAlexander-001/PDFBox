@@ -14,8 +14,9 @@ public class Main {
 //        document.save( "C:\\PDF\\mypdf.pdf"); //Make sure you have the dir
 //        System.out.println("PDF MADE!");
 //        document.close();
+        // ^^ Above code simply makes a pdf that is a blank 1-page document. ^^
 
-        File oldFile = new File("C:\\PDF\\sample.pdf");
+//        File oldFile = new File("C:\\PDF\\sample.pdf");
 
     }
 }
