@@ -16,7 +16,22 @@ public class Main {
 //        document.close();
         // ^^ Above code simply makes a pdf that is a blank 1-page document. ^^
 
-//        File oldFile = new File("C:\\PDF\\sample.pdf");
+
+
+        
+        File oldFile = new File("C:\\PDF\\sample.pdf");
+        PDDocument document = PDDocument.load(oldFile);
+
+        if (document.isEncrypted()) {
+            document.setAllSecurityToBeRemoved(true); // This will remove all security from the document
+        }
+
+        document.addPage(new PDPage());
+
+        document.save("C:\\PDF\\myNewPDF.pdf");
+        System.out.println("PDF appended!");
+        document.close();
+
 
     }
 }
