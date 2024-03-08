@@ -18,18 +18,25 @@ public class Main {
 
 
 
-        
+
         File oldFile = new File("C:\\PDF\\sample.pdf");
         PDDocument document = PDDocument.load(oldFile);
-
         if (document.isEncrypted()) {
             document.setAllSecurityToBeRemoved(true); // This will remove all security from the document
         }
-
         document.addPage(new PDPage());
-
         document.save("C:\\PDF\\myNewPDF.pdf");
-        System.out.println("PDF appended!");
+
+
+
+        String newFilePath = "C:\\PDF\\myNewPDF.pdf";
+        document.save(newFilePath); // Save the new document
+
+        String originalFileName = oldFile.getName(); // This extracts the file name
+        String newFileName = new File(newFilePath).getName();
+
+        System.out.println("Old File: " + originalFileName);
+        System.out.println("New File: " + newFileName);
         document.close();
 
 
