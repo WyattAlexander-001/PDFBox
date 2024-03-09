@@ -1,0 +1,1 @@
+Simply an area for README images to live
