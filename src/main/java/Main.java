@@ -63,11 +63,35 @@ public class Main {
 //        System.out.println("Split " + (num-1) + " pages!");
 
 
-        // ^^ Above code simply splits a large document to a bunch of pdf(s) ^^
+        // ^^ Above code simply splits a large document to a bunch of pdf(s) max pages of pdf ^^
         //====================================================================//
 
+        File oldFile = new File("C:\\PDF\\sample.pdf");
+        PDDocument document = PDDocument.load(oldFile);
+        if (document.isEncrypted()) {
+            document.setAllSecurityToBeRemoved(true); // This will remove all security from the document
+        }
 
+        File newFileDestination = new File("C:\\PDF\\extract");
+        newFileDestination.mkdirs();
+        Splitter splitter = new Splitter();
+        splitter.setStartPage(2); //Literally pg2
+        splitter.setEndPage(10); //Literally pg3
 
+        List<PDDocument> splitPages = splitter.split(document);
+
+        PDDocument newDoc = new PDDocument();
+        for(PDDocument i : splitPages){
+            newDoc.addPage(i.getPage(0));
+        }
+
+        File outputFile = new File(newFileDestination, oldFile.getName().replace(".pdf", "-splitUp.pdf"));
+        newDoc.save(outputFile);
+        System.out.println("PDF Created: " + outputFile.getAbsolutePath());
+        newDoc.close();
+
+        // ^^ Above code simply splits a large document to a range of pdf(s) pages 2-10 ^^
+        //====================================================================//
 
 
 
@@ -106,13 +130,13 @@ public class Main {
         //^^^ OCR Practice, Used as a last resort when PDFBox fails ^^^//
         //====================================================================//
 
-        try (PDDocument document = PDDocument.load(new File("C:\\PDF\\sample.pdf"))) {
-            PDFTextStripper stripper = new PDFTextStripper();
-            String text = stripper.getText(document);
-            System.out.println("Text in the PDF: " + text);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try (PDDocument document = PDDocument.load(new File("C:\\PDF\\sample.pdf"))) {
+//            PDFTextStripper stripper = new PDFTextStripper();
+//            String text = stripper.getText(document);
+//            System.out.println("Text in the PDF: " + text);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         // ^^^ Extract text from an entire PDF ^^^ //
         // I want to build out one for invoices, this is a good test
 
