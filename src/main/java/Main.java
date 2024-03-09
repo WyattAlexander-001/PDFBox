@@ -1,7 +1,10 @@
+import net.sourceforge.tess4j.Tesseract;
+import net.sourceforge.tess4j.TesseractException;
 import org.apache.pdfbox.multipdf.Splitter;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.apache.pdfbox.text.PDFTextStripper;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -63,21 +66,58 @@ public class Main {
         // ^^ Above code simply splits a large document to a bunch of pdf(s) ^^
         //====================================================================//
 
-        File oldFile = new File("C:\\PDF\\sample.pdf");
-        try (PDDocument document = PDDocument.load(oldFile)) {
-            if (document.isEncrypted()) {
-                document.setAllSecurityToBeRemoved(true); // This will remove all security from the document
-            }
 
-            PDFRenderer renderer = new PDFRenderer(document);
-            int pageCount = document.getNumberOfPages(); // Basically .length
-            for (int i = 0; i < pageCount; i++) {
-                BufferedImage image = renderer.renderImageWithDPI(i, 300);
-                File outputFile = new File("C:\\PDF\\output\\split_" + String.format("%02d", i + 1) + ".png"); // Change extension to .jpg for JPEG
-                ImageIO.write(image, "PNG", outputFile); // Use "JPEG" instead of "PNG" for JPEG format
-            }
-            System.out.println("Split and saved " + pageCount + " pages as images!");
+
+
+
+
+//        File oldFile = new File("C:\\PDF\\sample.pdf");
+//        try (PDDocument document = PDDocument.load(oldFile)) {
+//            if (document.isEncrypted()) {
+//                document.setAllSecurityToBeRemoved(true); // This will remove all security from the document
+//            }
+//
+//            PDFRenderer renderer = new PDFRenderer(document);
+//            int pageCount = document.getNumberOfPages(); // Basically .length
+//            for (int i = 0; i < pageCount; i++) {
+//                BufferedImage image = renderer.renderImageWithDPI(i, 300);
+//                File outputFile = new File("C:\\PDF\\output\\split_" + String.format("%02d", i + 1) + ".png"); // Change extension to .jpg for JPEG
+//                ImageIO.write(image, "PNG", outputFile); // Use "JPEG" instead of "PNG" for JPEG format
+//            }
+//            System.out.println("Split and saved " + pageCount + " pages as images!");
+//        }
+
+        // ^^ Above code simply splits a large document to a bunch of png(s) ^^
+        //====================================================================//
+
+//        Tesseract tesseract = new Tesseract();
+//
+//        try {
+//            // If tessdata folder is not in default location, you need to set it here
+//            tesseract.setDatapath("C:\\Program Files\\Tesseract-OCR\\tessdata");
+////            tesseract.setLanguage("eng");
+//
+//            // The doOCR method takes an image file and returns the recognized text
+//            String text = tesseract.doOCR(new java.io.File("C:\\PDF\\sample.pdf")); // Need ghostscript for pdf, BUT NOT JPG
+//            System.out.println("Recognized text: " + text);
+//        } catch (TesseractException e) {
+//            System.err.println("Error while reading image: " + e.getMessage());
+//        }
+        //^^^ OCR Practice, Used as a last resort when PDFBox fails ^^^//
+        //====================================================================//
+
+        try (PDDocument document = PDDocument.load(new File("C:\\PDF\\sample.pdf"))) {
+            PDFTextStripper stripper = new PDFTextStripper();
+            String text = stripper.getText(document);
+            System.out.println("Text in the PDF: " + text);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        // ^^^ Extract text from an entire PDF ^^^ //
+        // I want to build out one for invoices, this is a good test
+
+        //====================================================================//
+
 
 
 
